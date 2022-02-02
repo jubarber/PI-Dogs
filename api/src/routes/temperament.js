@@ -10,27 +10,30 @@ router.get("/", async (req, res) => {
   //console.log('SOY BREED API DATA', breedApi.data);
   const temperamentApi = breedApi.data.map((e) => {
     return {
+      id: e.id,
       temperament: e.temperament
     };
   });
-  //temperamentApi es un array de objetos con la unica propiedad temperament.
+  // console.log('SOY TEMPERAMENT API', temperamentApi)
+  //temperamentApi es un array de objetos.
   temperamentApi.map((e) => {
     if (e.temperament !== undefined) {
       //hay perros que NO tienen temperamento, aca los filtro
       temperamentArray.push(e.temperament); // pusheo los temepramentos true al array
     }
   });
-  const temperamentSplitted = temperamentArray.map((e) => e.split(",")).flat(); //spliteo y flateo para tener un array de palabras individuales (temperamentos)
+  const temperamentSplitted = temperamentArray.map((e) => e.split(", ")).flat(); //spliteo y flateo para tener un array de palabras individuales (temperamentos)
   temperamentSplitted.forEach(async (e) => {
     await Temperament.findOrCreate({
       where: {
-        name: e
+        name: e.toLowerCase(),
       }
     });
   });
+
   const allTemperamentsInfo = await Temperament.findAll();
-  const allTemperaments = allTemperamentsInfo.map((e) => e.name);
-  res.send(allTemperaments);
+  // const allTemperaments = allTemperamentsInfo.map((e) => e.name);
+  res.send(allTemperamentsInfo);
 });
 
 module.exports = router;

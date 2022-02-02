@@ -120,6 +120,7 @@ router.post("/", async (req, res, next) => {
     const height = `${heightMin} - ${heightMax}`;
     const weight = `${weightMin} - ${weightMax}`;
     let newDog = await Breed.create({ name, height, weight, lifeSpan, image });
+    console.log('SOY TEMPERAMENTO', temperament);
     await newDog.addTemperament(temperament);
     res.send(newDog);
   } catch (err) {
