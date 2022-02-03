@@ -7,41 +7,34 @@ export function validate(input) {
   let errors = {};
   if (!input.name) {
     errors.name = "Por favor, ingrese el nombre de la raza";
-  } else if (typeof input.name !== "string") {
-    errors.name = "Por favor, ingrese solamente letras";
   }
   if (!input.heightMin) {
     errors.height = "Por favor, ingrese la altura mínima";
   } else if (input.heightMin > input.heightMax) {
     errors.height = "La altura mínima no puede ser mayor que la altura máxima";
   }
-}
+  if (!input.heightMax) {
+    errors.height = "Por favor, ingrese la altura máxima";
+  } 
+  if (!input.weightMin) {
+    errors.weight = "Por favor, ingrese el peso mínimo";
+  } else if (input.weightMin > input.weightMax) {
+    errors.weight = "El peso mínimo no puede ser mayor que el peso máximo";
+  }
+  if (!input.weightMax) {
+    errors.weight = "Por favor, ingrese el peso máximo";
+  }
+
+  return errors;
+};
 
 export default function Form() {
   const dispatch = useDispatch();
   const tempState = useSelector((state) => state.temperaments);
   const temp = tempState.data;
-
-  useEffect(() => {
-    dispatch(getTemperaments());
-  }, [dispatch]);
-
+  // console.log(temp);
   const [temporal, setTemporal] = useState([]);
 
-  useEffect(() => { //ESTO NO ANDAAAAAAAAAA
-    if (temporal.lenght > 0) {
-      let total = temp.reduce((acc, e) => {
-        if (temporal.includes(e.name)) {
-          acc.push(e.id);
-        }
-        return acc;
-      }, []);
-      setInput({ ...input, temperament: total });
-    }
-  }, [temporal]);
-
-  // const [errores, setErrores] = useState({});
-  // const [temperament, setTemperament] = useState([]);
   const [input, setInput] = useState({
     name: "",
     heightMin: "",
@@ -53,7 +46,29 @@ export default function Form() {
     image: ""
   });
 
+  useEffect(() => {
+    dispatch(getTemperaments());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (temporal.lenght !== 0) {
+      var total =
+        temp &&
+        temp.reduce((acc, e) => {
+          if (temporal.includes(e.name)) {
+            acc.push(e.id);
+          }
+          return acc;
+        }, []);
+
+      setInput({ ...input, temperament: total });
+    }
+  }, [temporal]);
+
+  const [errors, setErrors] = useState({});
+
   const handleSelectTemp = (e) => {
+    e.preventDefault();
     if (temporal.includes(e.target.value)) {
       alert("Ya ha seleccionado este temperamento");
     } else {
@@ -82,7 +97,18 @@ export default function Form() {
       ...input,
       [e.target.name]: e.target.value
     });
+    setErrors(
+      validate({
+        ...input,
+        [e.target.name]: e.target.value
+      })
+    )
   };
+
+  function handleDelete(e) {
+    let temperamentFiltered = temporal.filter((el) => el !== e);
+    setTemporal(temperamentFiltered);
+  }
 
   return (
     <div className={estilos.cuerpo}>
@@ -100,7 +126,7 @@ export default function Form() {
               value={input.name}
               onChange={handleChange}
             />
-
+            {errors.name && <p className={estilos.danger}>{errors.name}</p>}
             {/* <label>Altura Mínima: </label> */}
             <div className={estilos.inputGroup}>
               <input
@@ -122,6 +148,9 @@ export default function Form() {
                 onChange={handleChange}
               />
             </div>
+            
+            {errors.height && <p className={estilos.danger}>{errors.height}</p>}
+            {errors.height && <p className={estilos.danger}>{errors.height}</p>}
 
             {/* <label>Peso Mínimo: </label> */}
             <div className={estilos.inputGroup}>
@@ -144,6 +173,10 @@ export default function Form() {
                 onChange={handleChange}
               />
             </div>
+            
+            {errors.weight && <p className={estilos.danger}>{errors.weight}</p>}
+            {errors.weight && <p className={estilos.danger}>{errors.weight}</p>}
+
             {/* <label>Esperanza de Vida </label> */}
             <input
               className={estilos.input}
@@ -153,8 +186,7 @@ export default function Form() {
               value={input.lifeSpan}
               onChange={handleChange}
             />
-            {/* 
-            <label>Imagen: </label> */}
+
             <input
               className={estilos.input}
               placeholder="URL de la imagen"
@@ -164,11 +196,9 @@ export default function Form() {
               onChange={handleChange}
             />
 
-            {/* <label>Temperamento: </label> */}
             <select
               className={estilos.input}
               onChange={(e) => handleSelectTemp(e)}
-              // type="checkbox"
             >
               <option label={"Seleccionar temperamento"}></option>
               {temp?.map((temp) => {
@@ -179,15 +209,20 @@ export default function Form() {
                 );
               })}
             </select>
+            {errors.temperament && <p className={estilos.danger}>{errors.temperament}</p>}
+
             <div className={estilos.inputGroup}>
-            {temporal?.map((e) => {
-              return (
-                <div className={estilos.inputTemp}>
-                  {e}
-                  {/* <button className={estilos.btnClose}>X</button> */}
-                </div>
-              );
-            })}
+              {temporal?.map((e) => {
+                return (
+                  <div
+                    className={estilos.inputTemp}
+                    onClick={() => handleDelete(e)}
+                  >
+                    {e}
+                    <p className={estilos.texto}>Click para eliminar</p>
+                  </div>
+                );
+              })}
             </div>
 
             <button className={estilos.button} onClick={handleSubmit}>

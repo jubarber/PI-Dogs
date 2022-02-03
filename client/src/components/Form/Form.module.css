@@ -66,10 +66,6 @@ body {
   width: 100%;
   margin-top: 25px;
   margin-right: 10px;
-  /* margin-left: 10px; */
-  /* margin-top: 25px;
-  margin-left: 10px;
-  margin-right: 10px; */
   justify-content: space-between;
 }
 .input:hover {
@@ -98,35 +94,56 @@ body {
   background-color: rgb(5, 64, 112);
   /* size: 18px; */
 }
-/* 
-.btnClose {
-  background-color:  #15172b;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-  border-radius: 7px;
-  margin-bottom: 10px;
-  margin-left: 26rem;
-  margin-bottom: 5rem;
-}
- */
+
 .inputTemp {
   background-color: #303245;
   border-radius: 12px;
   border: 0;
   box-sizing: border-box;
   color: #eee;
-  font-size: 15px;
+  font-size: 125%;
   height: 100%;
   outline: 0;
   padding: 10px;
-  width: 30%;
+  width: 50%;
   margin-top: 25px;
   margin-right: 10px;
-  /* margin-left: 10px; */
-  /* margin-top: 25px;
-  margin-left: 10px;
-  margin-right: 10px; */
   justify-content: space-between;
 }
+
+ .inputTemp:hover {
+   cursor: pointer;
+ }
+
+ .texto {
+    position: absolute; /*Info sobre la imagen*/
+    font-size: 0.8rem;
+    top: 31.5rem;
+    left: 11rem; /*Desplazamos a partir de la esquina superior izquierda*/
+    zoom: 1;
+    filter: alpha(opacity=0); /*Opacidad */
+    opacity: 0; /*Inicialmente transparente */
+    padding: 5px;
+    color: white;
+    background: black;
+    -moz-transition:all ease .1s; /*Aplicamos una ligera transición*/
+    -webkit-transition:all ease .1s ;
+    transition:all ease .1s;
+    }
+    .inputTemp:hover .texto {
+    filter: alpha(opacity=80);
+    opacity: .5; /*Al hacer hover sobre el input hacemos visible los datos*/
+ }
+
+ .danger {
+   position: relative;
+   font-size: .8rem;
+   top: 0.5rem;
+   color: red;
+   border-color: red;
+   display: block;
+   margin-block-start: 1em;
+   margin-block-end: 1em;
+   margin-inline-start: 0px;
+   margin-inline-end: 0px;
+ }
