@@ -17,7 +17,7 @@ body {
   background-color: #15172b;
   border-radius: 20px;
   box-sizing: border-box;
-  height: 750px;
+  height: 80vh;
   padding: 20px;
   width: 500px;
   margin: auto;
@@ -26,7 +26,7 @@ body {
 
 .title {
   color: #eee;
-  font-family: sans-serif;
+  font-family:'Century Gothic', sans-serif;
   font-size: 36px;
   font-weight: 600;
   margin-top: 10px;
@@ -34,7 +34,7 @@ body {
 
 .subtitle {
   color: #eee;
-  font-family: sans-serif;
+  font-family:'Century Gothic', sans-serif;
   font-size: 16px;
   font-weight: 600;
   margin-top: 10px;
@@ -62,11 +62,12 @@ body {
   font-size: 18px;
   height: 100%;
   outline: 0;
-  padding: 10px;
   width: 100%;
+  padding: 10px;
   margin-top: 25px;
   margin-right: 10px;
   justify-content: space-between;
+  font-family:'Century Gothic', sans-serif;
 }
 .input:hover {
   background-color: #232433;
@@ -84,6 +85,7 @@ body {
   margin-top: 38px;
   text-align: center;
   width: 100%;
+  font-family:'Century Gothic', sans-serif;
 }
 
 .button:active {
@@ -108,7 +110,8 @@ body {
   width: 50%;
   margin-top: 25px;
   margin-right: 10px;
-  justify-content: space-between;
+  justify-content: space-between;  
+  font-family:'Century Gothic', sans-serif;
 }
 
  .inputTemp:hover {
@@ -129,6 +132,7 @@ body {
     -moz-transition:all ease .1s; /*Aplicamos una ligera transición*/
     -webkit-transition:all ease .1s ;
     transition:all ease .1s;
+    font-family:'Century Gothic', sans-serif;
     }
     .inputTemp:hover .texto {
     filter: alpha(opacity=80);
@@ -147,3 +151,33 @@ body {
    margin-inline-start: 0px;
    margin-inline-end: 0px;
  }
+
+ .nav{
+  background-color: #15172be8;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-family:'Century Gothic', sans-serif;
+ }
+
+ .link{
+  color:white;
+  font-size: 1.5rem;
+  text-decoration: none;
+  padding-right: 2rem;
+  padding-left: 2rem;
+  padding-top: 1.3rem;
+  padding-bottom: 1rem;
+}
+.link:hover{
+  text-decoration: underline;
+  font-weight: bold;
+}
+.link:active{
+  color: #06b;
+  text-decoration: underline;
+}
+.link:focus{
+  color: #06b;
+  text-decoration: underline;
+}

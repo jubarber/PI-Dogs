@@ -34,6 +34,7 @@ router.get("/", async (req, res) => {
   const allTemperamentsInfo = await Temperament.findAll();
   // const allTemperaments = allTemperamentsInfo.map((e) => e.name);
   res.send(allTemperamentsInfo);
+  // console.log('SOY ALL TEMP INFO', allTemperamentsInfo);
 });
 
 module.exports = router;

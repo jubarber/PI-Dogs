@@ -1,37 +1,50 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { createDog, getTemperaments } from "../../redux/actions/actions.js";
 import estilos from "./Form.module.css";
 
 export function validate(input) {
-  let errors = {};
+  let error = {};
+
   if (!input.name) {
-    errors.name = "Por favor, ingrese el nombre de la raza";
+    error.name = "Por favor, ingrese el nombre de la raza";
+  }
+  if(input.temperament.length < 1){
+    error.temperament = "Por favor, seleccione al menos un temperamento";
+  }
+  if(input.temperament.length > 4){
+    error.temperament = "Por favor, seleccione hasta cinco temperamentos";
   }
   if (!input.heightMin) {
-    errors.height = "Por favor, ingrese la altura mínima";
-  } else if (input.heightMin > input.heightMax) {
-    errors.height = "La altura mínima no puede ser mayor que la altura máxima";
+    error.heightMin = "Por favor, ingrese la altura mínima";
+  }
+  if (input.heightMin && input.heightMax && input.heightMin >= input.heightMax) {
+    error.height = "La altura máxima debe ser mayor que la altura mínima";
   }
   if (!input.heightMax) {
-    errors.height = "Por favor, ingrese la altura máxima";
+    error.heightMax = "Por favor, ingrese la altura máxima";
   } 
   if (!input.weightMin) {
-    errors.weight = "Por favor, ingrese el peso mínimo";
-  } else if (input.weightMin > input.weightMax) {
-    errors.weight = "El peso mínimo no puede ser mayor que el peso máximo";
+    error.weightMin = "Por favor, ingrese el peso mínimo";
+  } 
+  if (input.weightMin && input.weightMax && input.weightMin >= input.weightMax) {
+    error.weight = "El peso máximo debe ser mayor que el peso mínimo";
   }
   if (!input.weightMax) {
-    errors.weight = "Por favor, ingrese el peso máximo";
+    error.weightMax = "Por favor, ingrese el peso máximo";
   }
-
-  return errors;
+  // if(!input.lifeSpan){
+  //   error.lifeSpan = "Por favor, ingrese la esperanza de vida";
+  // }
+  
+  return error;
 };
 
 export default function Form() {
   const dispatch = useDispatch();
   const tempState = useSelector((state) => state.temperaments);
-  const temp = tempState.data;
+  // const temp = tempState.data;
   // console.log(temp);
   const [temporal, setTemporal] = useState([]);
 
@@ -43,18 +56,18 @@ export default function Form() {
     weightMax: "",
     lifeSpan: "",
     temperament: [],
-    image: ""
   });
 
   useEffect(() => {
     dispatch(getTemperaments());
+    // console.log('SOY TEMP', temp)
   }, [dispatch]);
 
   useEffect(() => {
     if (temporal.lenght !== 0) {
       var total =
-        temp &&
-        temp.reduce((acc, e) => {
+        tempState &&
+        tempState.reduce((acc, e) => {
           if (temporal.includes(e.name)) {
             acc.push(e.id);
           }
@@ -77,19 +90,22 @@ export default function Form() {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(createDog(input));
-    setInput({
-      name: "",
-      heightMin: "",
-      heightMax: "",
-      weightMin: "",
-      weightMax: "",
-      lifeSpan: "",
-      temperament: [],
-      image: ""
-    });
-    setTemporal([]);
+    if(Object.keys(errors).length === 0){
+      dispatch(createDog(input));
+      setInput({
+        name: "",
+        heightMin: "",
+        heightMax: "",
+        weightMin: "",
+        weightMax: "",
+        lifeSpan: "",
+        temperament: [],
+      });
+      setTemporal([]);
+    }else {
+      e.preventDefault();
+      alert('Campos incompletos')
+    }
   };
 
   const handleChange = (e) => {
@@ -112,6 +128,9 @@ export default function Form() {
 
   return (
     <div className={estilos.cuerpo}>
+      <nav className={estilos.nav}>
+        <Link to='/home' className={estilos.link}>Home</Link>
+      </nav>
       <div className={estilos.form}>
         <div className={estilos.title}>Bienvenid@</div>
         <div className={estilos.subtitle}>Crea tu propia raza de perro!</div>
@@ -126,8 +145,9 @@ export default function Form() {
               value={input.name}
               onChange={handleChange}
             />
+
             {errors.name && <p className={estilos.danger}>{errors.name}</p>}
-            {/* <label>Altura Mínima: </label> */}
+
             <div className={estilos.inputGroup}>
               <input
                 className={estilos.input}
@@ -150,7 +170,8 @@ export default function Form() {
             </div>
             
             {errors.height && <p className={estilos.danger}>{errors.height}</p>}
-            {errors.height && <p className={estilos.danger}>{errors.height}</p>}
+            {errors.heightMin && <p className={estilos.danger}>{errors.heightMin}</p>}
+            {errors.heightMax && <p className={estilos.danger}>{errors.heightMax}</p>}
 
             {/* <label>Peso Mínimo: </label> */}
             <div className={estilos.inputGroup}>
@@ -175,7 +196,8 @@ export default function Form() {
             </div>
             
             {errors.weight && <p className={estilos.danger}>{errors.weight}</p>}
-            {errors.weight && <p className={estilos.danger}>{errors.weight}</p>}
+            {errors.weightMin && <p className={estilos.danger}>{errors.weightMin}</p>}
+            {errors.weightMax && <p className={estilos.danger}>{errors.weightMax}</p>}
 
             {/* <label>Esperanza de Vida </label> */}
             <input
@@ -187,29 +209,23 @@ export default function Form() {
               onChange={handleChange}
             />
 
-            <input
-              className={estilos.input}
-              placeholder="URL de la imagen"
-              type="text"
-              name="image"
-              value={input.image}
-              onChange={handleChange}
-            />
+            {/* {errors.lifeSpan && <p className={estilos.danger}>{errors.lifeSpan}</p>} */}
 
-            <select
-              className={estilos.input}
-              onChange={(e) => handleSelectTemp(e)}
-            >
-              <option label={"Seleccionar temperamento"}></option>
-              {temp?.map((temp) => {
-                return (
-                  <option value={temp.name} name={temp.name} label={temp.name}>
-                    {temp.name}
-                  </option>
-                );
-              })}
-            </select>
-            {errors.temperament && <p className={estilos.danger}>{errors.temperament}</p>}
+              <select
+                className={estilos.input}
+                onChange={(e) => handleSelectTemp(e)}>
+                <option label={"Seleccionar temperamento"}></option>
+                {tempState?.map((tempState) => {
+                  return (
+                    <option value={tempState.name} name={tempState.name} label={tempState.name}>
+                      {tempState.name}
+                    </option>
+                  );
+                })}
+              </select>
+              {errors.temperament && <p className={estilos.danger}>{errors.temperament}</p>}
+              
+
 
             <div className={estilos.inputGroup}>
               {temporal?.map((e) => {

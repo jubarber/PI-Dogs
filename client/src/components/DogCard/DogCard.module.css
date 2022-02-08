@@ -1,0 +1,68 @@
+.cuerpoTarjeta{
+  background-color: #15172bea;
+  border-radius: 20px;
+  box-sizing: border-box;
+  height: 550px;
+  padding: 20px;
+  width: 500px;
+  margin: auto;
+  margin-top: 3%;
+  justify-content: center;
+}
+
+.cuerpoTarjeta p{
+  color: white;
+  font-size: 1.5rem;
+}
+
+.cuerpoTarjeta:hover{
+  justify-content: center;
+  background-color: #15172b;
+  height: 700px;
+  width: 550px;
+  -moz-transition:all ease .5s; /*Aplicamos una ligera transición*/
+    -webkit-transition:all ease .5s ;
+    transition:all ease .4s;
+}
+.cuerpoTarjeta:hover p{
+  align-items: center;
+  padding-top: 1rem;
+}
+
+.link{
+  color: white;
+  margin-top: 2rem;
+  font-size: 1.5rem;
+}
+
+.imagen{
+  height: 50%;
+  width: 100%;
+
+}
+
+.contenedorVerMas{
+  margin-top: -1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.verMas {
+  font-size: 0.8rem;
+  border-radius: 10px;
+  width: 60%;
+  zoom: 1;
+  filter: alpha(opacity=0); /*Opacidad */
+  opacity: 0; /*Inicialmente transparente */
+  padding: 5px;
+  color: white;
+  background: black;
+  -moz-transition:all ease .1s; /*Aplicamos una ligera transición*/
+  -webkit-transition:all ease .1s ;
+  transition:all ease .1s;
+  }
+  
+.cuerpoTarjeta:hover .verMas{
+  filter: alpha(opacity=80);
+  opacity: .5; 
+}

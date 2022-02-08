@@ -1,0 +1,27 @@
+.select {
+  filter: alpha(opacity=50); /*Opacidad */
+  opacity: 0.5;
+  color: #eee;
+  border-radius: 12px;
+  border: 0;
+  color: #303245;
+  font-size: 100%;
+  height: 3rem;
+  width: 90%;
+  outline: 0;
+  padding: 5%;
+  margin-top: 8%;
+  justify-content: center;
+  font-family: 'Century Gothic', sans-serif;
+  -moz-transition: all ease .3s; /*Aplicamos una ligera transición*/
+  -webkit-transition: all ease .3s;
+  transition: all ease .4s;
+}
+.select:hover {
+  /* background-color: #15172b; */
+  opacity: 1;
+  cursor: pointer;
+}
+.select:focus{
+  opacity: 1;
+}

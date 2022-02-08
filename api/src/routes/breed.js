@@ -10,49 +10,60 @@ router.get("/", async (req, res, next) => {
     const { name } = req.query;
     if (name) {
       //si me pasan un nombre por query, busco en mi base de datos
-      const dbBreedsInfo = await Breed.findAll({ include: Temperament }).then(
-        (r) =>
-          r.filter((e) =>
-            e.dataValues.name.toLowerCase().includes(name.toLowerCase())
+      const dbBreedsInfo = await Breed.findAll({ include: Temperament })
+      .then(
+        (r) => (r.filter((e) =>
+            e.dataValues.name.toLowerCase().includes(name.toLowerCase()))
           )
       );
       // console.log("SOY DB BREEDS INFO", dbBreedsInfo);
       if (dbBreedsInfo.length !== 0) {
-        const dbPromiseBreeds = dbBreedsInfo.map((e) => {
+        var dbPromiseBreeds = dbBreedsInfo.map((e) => {
           //devuelvo las propiedades que me piden
           return {
+            id: e.id,
             name: e.name,
-            temperament: e.temperament,
-            weight: e.weight
+            weight: e.weight,
+            temperament: e.temperaments
+            .map((e) => e.name.charAt(0).toUpperCase() + e.name.slice(1))
+            .join(", ")
           };
         });
-        //me guardo la informacion que me interesa de la api en apiBreeds
-        const apiUrl = await axios.get(
-          `https://api.thedogapi.com/v1/breeds/search?q=${name}`
-        );
-        const apiPromiseBreeds = apiUrl.data.map((e) => {
+      }
+      //me guardo la informacion que me interesa de la api en apiBreeds
+      const apiUrl = await axios.get(
+        `https://api.thedogapi.com/v1/breeds/search?q=${name}`
+      );
+      if (apiUrl) {
+        var apiPromiseBreeds = apiUrl.data.map((e) => {
           return {
+            id: e.id,
             name: e.name,
             weight: e.weight.metric,
             temperament: e.temperament,
             image: e.reference_image_id
           };
         });
-        // busco en apiBreeds las razas de perro que contengan el nombre que me pasan por query
-        //console.log('SOY API PROMISE BREEDS', apiPromiseBreeds)
-        // como apiPromiseBreeds y dbPromiseBreeds son promesas y yo quiero que sucedan en simultaneo, uso Promise.all
-        Promise.all([apiPromiseBreeds, dbPromiseBreeds]).then((r) => {
-          const [apiBreeds, dbBreeds] = r;
-          res.send(r);
-        });
-      } else {
-        res.send("No se registra raza coincidente con la búsqueda");
       }
+      // busco en apiBreeds las razas de perro que contengan el nombre que me pasan por query
+      //console.log('SOY API PROMISE BREEDS', apiPromiseBreeds)
+      // como apiPromiseBreeds y dbPromiseBreeds son promesas y yo quiero que sucedan en simultaneo, uso Promise.all
+      Promise.all([apiPromiseBreeds, dbPromiseBreeds]).then((r) => {
+        const [apiBreeds, dbBreeds] = r;
+        res.send(r);
+      });
+      //  else {
+      //   res.send("No se registra raza coincidente con la búsqueda");
+      // }
     } else {
       // si no me pasan nombre por query muestro la lista de razas que me traigo de la api Y de mi base de datos
-      const apiUrl = await axios.get("https://api.thedogapi.com/v1/breeds");
+      const apiUrl = await axios.get(
+        `https://api.thedogapi.com/v1/breeds?api_key=${api_key}`
+      );
       const apiPromiseBreeds = apiUrl.data.map((e) => {
+        // console.log('SOY IMAGEN', e.reference_image_id)
         return {
+          id: e.id,
           name: e.name,
           weight: e.weight.metric,
           temperament: e.temperament,
@@ -62,9 +73,12 @@ router.get("/", async (req, res, next) => {
       const dbBreedsInfo = await Breed.findAll({ include: Temperament });
       const dbPromiseBreeds = dbBreedsInfo.map((e) => {
         return {
+          id: e.id,
           name: e.name,
           weight: e.weight,
-          temperament: e.temperament
+          temperament: e.temperaments
+            .map((e) => e.name.charAt(0).toUpperCase() + e.name.slice(1))
+            .join(", ")
         };
       });
       Promise.all([apiPromiseBreeds, dbPromiseBreeds]).then((r) => {
@@ -85,6 +99,7 @@ router.get("/:breedId", async (req, res, next) => {
       //busco en mi base de datos si pa PK coincide con la id de la raza pasada por params
       const breedDb = await Breed.findByPk(breedId, { include: Temperament });
       const dogFoundDb = {
+        id: breedDb.id,
         name: breedDb.name,
         height: breedDb.height,
         weight: breedDb.weight,
@@ -93,22 +108,34 @@ router.get("/:breedId", async (req, res, next) => {
       };
       res.send(dogFoundDb); //devuelvo los datos que me interesan del perro encontrado por ID
     } else {
-      // busco en mi API
+      // // busco en mi API
       const breedApi = await axios.get(
-        `https://api.thedogapi.com/v1/breeds/${breedId}`
+        `https://api.thedogapi.com/v1/breeds/${breedId}?api_key=${api_key}`
       );
-      // console.log("SOY BREED API DATA", breedApi.data);
+      // console.log("SOY BREED API ", breedApi);
       let dogFound = {
+        id: breedApi.data.id,
         image: breedApi.data.reference_image_id,
         name: breedApi.data.name,
         height: breedApi.data.height.metric,
         weight: breedApi.data.weight.metric,
-        lifeSpan: breedApi.data.lifeSpan,
-        temperament: breedApi.data.temperament
-      };
-      // console.log("SOY DOG FOUND", dogFound);
-      res.send(dogFound);
-    }
+        lifeSpan: breedApi.data.life_span,
+        temperament: breedApi.data.temperament,
+      }
+      res.send(dogFound)
+      // console.log("SOY DOG FOUND", dogFound)
+
+    //   const breedApi = await axios.get(`https://api.thedogapi.com/v1/breeds`)
+    //   console.log('SOY BREEDID', breedId)
+    //   // console.log('SOY BREED API DATA', breedApi.data)
+    //   let dogFound = breedApi.data.find((e)=>{
+    //     if(e.id.toString() === breedId){
+    //     return e;
+    //   }
+    // });
+    // res.send(dogFound);
+    // console.log('SOY DOG FOUND', dogFound);
+    };
   } catch (err) {
     next(err);
   }
@@ -116,10 +143,19 @@ router.get("/:breedId", async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
   try {
-    const { name, heightMin, heightMax, weightMin, weightMax, lifeSpan, temperament, image } = req.body;
+    const {
+      name,
+      heightMin,
+      heightMax,
+      weightMin,
+      weightMax,
+      lifeSpan,
+      temperament,
+      image
+    } = req.body;
     const height = `${heightMin} - ${heightMax}`;
     const weight = `${weightMin} - ${weightMax}`;
-    let newDog = await Breed.create({ name, height, weight, lifeSpan, image });
+    let newDog = await Breed.create({ name, height, weight, lifeSpan, image});
     // console.log('SOY TEMPERAMENTO', temperament);
     await newDog.addTemperament(temperament);
     res.send(newDog);
