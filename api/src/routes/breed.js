@@ -16,7 +16,7 @@ router.get("/", async (req, res, next) => {
             e.dataValues.name.toLowerCase().includes(name.toLowerCase()))
           )
       );
-      // console.log("SOY DB BREEDS INFO", dbBreedsInfo);
+      // console.log("SOY DB BREEDS INFO", dbBreedsInfo); n
       if (dbBreedsInfo.length !== 0) {
         var dbPromiseBreeds = dbBreedsInfo.map((e) => {
           //devuelvo las propiedades que me piden
@@ -52,9 +52,6 @@ router.get("/", async (req, res, next) => {
         const [apiBreeds, dbBreeds] = r;
         res.send(r);
       });
-      //  else {
-      //   res.send("No se registra raza coincidente con la búsqueda");
-      // }
     } else {
       // si no me pasan nombre por query muestro la lista de razas que me traigo de la api Y de mi base de datos
       const apiUrl = await axios.get(
@@ -82,7 +79,7 @@ router.get("/", async (req, res, next) => {
         };
       });
       Promise.all([apiPromiseBreeds, dbPromiseBreeds]).then((r) => {
-        const [apiBreeds, dbBreeds] = r;
+        const [apiBreeds, dbBreeds] = r; 
         res.send(r);
       });
     }
@@ -123,18 +120,6 @@ router.get("/:breedId", async (req, res, next) => {
         temperament: breedApi.data.temperament,
       }
       res.send(dogFound)
-      // console.log("SOY DOG FOUND", dogFound)
-
-    //   const breedApi = await axios.get(`https://api.thedogapi.com/v1/breeds`)
-    //   console.log('SOY BREEDID', breedId)
-    //   // console.log('SOY BREED API DATA', breedApi.data)
-    //   let dogFound = breedApi.data.find((e)=>{
-    //     if(e.id.toString() === breedId){
-    //     return e;
-    //   }
-    // });
-    // res.send(dogFound);
-    // console.log('SOY DOG FOUND', dogFound);
     };
   } catch (err) {
     next(err);

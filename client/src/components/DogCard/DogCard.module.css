@@ -3,8 +3,8 @@
   border-radius: 20px;
   box-sizing: border-box;
   height: 550px;
-  padding: 20px;
   width: 500px;
+  padding: 20px;
   margin: auto;
   margin-top: 3%;
   justify-content: center;
@@ -18,8 +18,8 @@
 .cuerpoTarjeta:hover{
   justify-content: center;
   background-color: #15172b;
-  height: 700px;
-  width: 550px;
+  height: 590px;
+  width: 535px;
   -moz-transition:all ease .5s; /*Aplicamos una ligera transición*/
     -webkit-transition:all ease .5s ;
     transition:all ease .4s;
@@ -42,7 +42,7 @@
 }
 
 .contenedorVerMas{
-  margin-top: -1rem;
+  margin-top: -3.5rem;
   display: flex;
   justify-content: center;
 }
@@ -51,12 +51,13 @@
   font-size: 0.8rem;
   border-radius: 10px;
   width: 60%;
+  height: 25%;
   zoom: 1;
   filter: alpha(opacity=0); /*Opacidad */
   opacity: 0; /*Inicialmente transparente */
   padding: 5px;
-  color: white;
-  background: black;
+  color: rgb(0, 0, 0);
+  background: rgba(194, 194, 194, 0.753);
   -moz-transition:all ease .1s; /*Aplicamos una ligera transición*/
   -webkit-transition:all ease .1s ;
   transition:all ease .1s;

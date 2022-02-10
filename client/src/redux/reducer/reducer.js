@@ -13,7 +13,8 @@ import {
   GET_DOG_ID,
   SORT,
   FILTER,
-  FILTER_RAZA
+  FILTER_RAZA,
+  CHANGE_PAGE
 } from "../actions/actions.js";
 import {
   quickSort,
@@ -26,6 +27,8 @@ const initialState = {
   dogs: [],
   filteredDogs: [],
   dogById: [],
+  currentPage: 1,
+  cardsPP: 8,
   temperaments: [],
   error: false
 };
@@ -95,14 +98,18 @@ export default function rootReducer(state = initialState, action) {
       };
 
     case FILTER_RAZA:
-      const razaDB =
-        action.payload === "dataBase"
-          ? state.dogs.filter((e) => e.createInDb)
-          : state.dogs.filter((e) => !e.createInDb);
+      const razaDB = (action.payload === "dataBase")?state.dogs[1]:state.dogs[0];
+
       return {
         ...state,
         filteredDogs: razaDB
       };
+
+    case CHANGE_PAGE:
+      return {
+        ...state,
+        currentPage: action.payload
+      }
 
     default:
       return state;

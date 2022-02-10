@@ -6,15 +6,9 @@ import estilos from "./Form.module.css";
 
 export function validate(input) {
   let error = {};
-
+  
   if (!input.name) {
     error.name = "Por favor, ingrese el nombre de la raza";
-  }
-  if(input.temperament.length < 1){
-    error.temperament = "Por favor, seleccione al menos un temperamento";
-  }
-  if(input.temperament.length > 4){
-    error.temperament = "Por favor, seleccione hasta cinco temperamentos";
   }
   if (!input.heightMin) {
     error.heightMin = "Por favor, ingrese la altura mínima";
@@ -34,9 +28,6 @@ export function validate(input) {
   if (!input.weightMax) {
     error.weightMax = "Por favor, ingrese el peso máximo";
   }
-  // if(!input.lifeSpan){
-  //   error.lifeSpan = "Por favor, ingrese la esperanza de vida";
-  // }
   
   return error;
 };
@@ -44,10 +35,8 @@ export function validate(input) {
 export default function Form() {
   const dispatch = useDispatch();
   const tempState = useSelector((state) => state.temperaments);
-  // const temp = tempState.data;
-  // console.log(temp);
+  
   const [temporal, setTemporal] = useState([]);
-
   const [input, setInput] = useState({
     name: "",
     heightMin: "",
@@ -55,13 +44,22 @@ export default function Form() {
     weightMin: "",
     weightMax: "",
     lifeSpan: "",
-    temperament: [],
+    temperament:[],
   });
 
   useEffect(() => {
     dispatch(getTemperaments());
-    // console.log('SOY TEMP', temp)
+    // console.log('SOY TEMPSTATE DE FORM', tempState)
   }, [dispatch]);
+  
+  const handleSelectTemp = (e) => {
+    e.preventDefault();
+    if (temporal.includes(e.target.value)) {
+      alert("Ya ha seleccionado este temperamento");
+    } else {
+      setTemporal([...temporal, e.target.value]);
+    }
+  };
 
   useEffect(() => {
     if (temporal.lenght !== 0) {
@@ -72,24 +70,18 @@ export default function Form() {
             acc.push(e.id);
           }
           return acc;
-        }, []);
-
+        },[]);
+        // console.log('SOY TEMPERAMENT del form', input.temperament)
+        // console.log('SOY TEMPORAL DE FORM', temporal)
       setInput({ ...input, temperament: total });
     }
   }, [temporal]);
 
   const [errors, setErrors] = useState({});
 
-  const handleSelectTemp = (e) => {
-    e.preventDefault();
-    if (temporal.includes(e.target.value)) {
-      alert("Ya ha seleccionado este temperamento");
-    } else {
-      setTemporal([...temporal, e.target.value]);
-    }
-  };
 
   const handleSubmit = (e) => {
+    e.preventDefault();
     if(Object.keys(errors).length === 0){
       dispatch(createDog(input));
       setInput({
@@ -118,12 +110,12 @@ export default function Form() {
         ...input,
         [e.target.name]: e.target.value
       })
-    )
+    );
   };
 
   function handleDelete(e) {
     let temperamentFiltered = temporal.filter((el) => el !== e);
-    setTemporal(temperamentFiltered);
+    setTemporal(temperamentFiltered); 
   }
 
   return (
@@ -217,13 +209,13 @@ export default function Form() {
                 <option label={"Seleccionar temperamento"}></option>
                 {tempState?.map((tempState) => {
                   return (
-                    <option value={tempState.name} name={tempState.name} label={tempState.name}>
+                    <option key={tempState.id} value={tempState.name} name={tempState.name} label={tempState.name}>
                       {tempState.name}
                     </option>
                   );
                 })}
               </select>
-              {errors.temperament && <p className={estilos.danger}>{errors.temperament}</p>}
+              {/* {errors.temperament && <p className={estilos.danger}>{errors.temperament}</p>} */}
               
 
 
@@ -231,6 +223,7 @@ export default function Form() {
               {temporal?.map((e) => {
                 return (
                   <div
+                    key={e}
                     className={estilos.inputTemp}
                     onClick={() => handleDelete(e)}
                   >

@@ -8,13 +8,13 @@ import estilos from "./Filter.module.css";
 export const Filter = () => {
   const dispatch = useDispatch();
   const temperamentos = useSelector((state) => state.temperaments);
-  const dogs = useSelector((state) => state.dogs);
+  // const dogs = useSelector((state) => state.dogs);
 
   useEffect(() => {
     //obtengo temperamentos
     dispatch(getTemperaments());
     dispatch(getDogs());
-    console.log("SOY DOGS", dogs);
+    // console.log("SOY DOGS", dogs);
   }, [dispatch]);
 
   function handleSelectTemp(e) {
@@ -27,19 +27,28 @@ export const Filter = () => {
   }
 
   return (
-    <div className={estilos.contenedor}>
-      <div className={estilos.cont}>
-        <select onChange={handleSelectRaza} className={estilos.selectRaza}>
+    <div 
+    className={estilos.contenedor}
+    >
+      <div 
+      className={estilos.contSelect}
+      >
+        <select 
+        onChange={handleSelectRaza} 
+        className={estilos.selectRaza}
+        >
           <option value="default">Filtrar por origen</option>
           <option value="dataBase">Perros creados</option>
           <option value="api">Perros existentes</option>
         </select>
       </div>
-      <div className={estilos.cont}>
+      <div 
+      className={estilos.contSelect}
+      >
         <select
           id="types"
           onChange={handleSelectTemp}
-          className={estilos.select}
+          className={estilos.selectTemp}
         >
           <option value="default">Filtrar por temperamento</option>
           {temperamentos &&

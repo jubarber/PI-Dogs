@@ -4,29 +4,41 @@ import React, { useEffect } from "react";
 import { getDogs } from "../../redux/actions/actions";
 import { DogCard } from "../DogCard/DogCard";
 import { Link } from "react-router-dom";
-import { DogDetail } from "../DogDetail/DogDetail";
 import estilos from "./Cards.module.css";
+import { Loading } from "../Loading/Loading.jsx";
 
 export const Cards = () => {
   const dispatch = useDispatch();
   const error = useSelector((state) => state.error);
   const dog = useSelector((state) => state.filteredDogs.flat());
+  const currentPage = useSelector((state) => state.currentPage); //mi estado de redux que es 1
+  const cardsPP = useSelector((state) => state.cardsPP); // mi estado de redux que es 8
+
+  const indexOfLastItem = currentPage * cardsPP;
+  const indexOfFirstItem = indexOfLastItem - cardsPP;
+  const currentItems = dog.slice(indexOfFirstItem, indexOfLastItem); //divido las tarjetas qeu se van a mostrar a partir de sus indices
 
   useEffect(() => {
-    if (!error) dispatch(getDogs());
-  }, []);
+    if (!error) {
+      dispatch(getDogs());
+    }
+  }, [dispatch]);
 
-  // console.log("SOY DOG FILTERED.FLAT", dog);
+  let loading = true;
+  if (dog.length !== 0) {
+    loading = false;
+  }
+
+  // console.log("SOY DOG FILTERED", dog);
 
   return (
-    <div>
-      {!error ? (
-        dog &&
-        dog.map((e) => {
-          //dog es un array con dos array dentro, uno para los perros de la api y otro para mi base de datos
-          // console.log('SOY E', e)
-          // return (e && e.map((e) =>{ // aca mapeo entonces cada uno de los dos arreglos para acceder a cada objeto perro y renderizar la carta de cada uno
-          // console.log("SOY E", e);
+    <div className={estilos.contenedorTotal}>
+      {loading ? (
+        <Loading />
+      ) : 
+      currentItems ?
+        currentItems.map((e) => {
+          // console.log('SOY CURRENT ITEMS', currentItems)
           return (
             <div>
               <div className={estilos.contenedorTarjeta}>
@@ -44,10 +56,16 @@ export const Cards = () => {
               </div>
             </div>
           );
-          // }))
         })
-      ) : (
-        <div>No hay coincidencias con la raza ingresada</div>
+       : (
+        <div className={estilos.noCoincidences}>
+          <h1>No se encontraron coincidencias :(</h1>
+          <img
+            className={estilos.gif}
+            src="https://c.tenor.com/VpJTNKRf_QcAAAAM/dog-sad.gif"
+            alt=":("
+          />
+        </div>
       )}
     </div>
   );

@@ -7,7 +7,7 @@ export default function Landing() {
     <section className={estilos.full}>
       <div className={estilos.fullInner}>
         <div className={estilos.content}>
-          <h1>Nombre de la app</h1>
+          <h1>Doggies</h1>
           <Link to='/home' className={estilos.btn}>HOME</Link>
         </div>
       </div>

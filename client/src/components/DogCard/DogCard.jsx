@@ -1,10 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import estilos from "./DogCard.module.css";
 import imgDog from "../../img/imgDog.jpg";
 
 export const DogCard = (props) => {
-  const imgUrl = `https://cdn2.thedogapi.com/images/${props.image}.jpg`;
+  let imgUrl = `https://cdn2.thedogapi.com/images/${props.image}.jpg`;
   if (props.image?.length > 15) {
     imgUrl = props.image;
   }
@@ -12,7 +11,7 @@ export const DogCard = (props) => {
   // console.log("SOY PROPS DE DOG CARD", props);
 
   return (
-    <div className={estilos.cuerpoTarjeta}>
+    <div key={props.id} className={estilos.cuerpoTarjeta}>
       <img
         className={estilos.imagen}
         src={imgUrl}

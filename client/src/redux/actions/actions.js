@@ -8,6 +8,7 @@ export const GET_DOG_ID = "GET_DOG_ID";
 export const SORT = "SORT";
 export const FILTER = "FILTER";
 export const FILTER_RAZA = "FILTER_RAZA";
+export const CHANGE_PAGE = "CHANGE_PAGE";
 
 export function getDogs() {
   return function (dispatch) {
@@ -30,7 +31,7 @@ export function getTemperaments() {
 
 export function getDogByName(name) {
   return function (dispatch) {
-    const pedidoBack = axios
+    axios
       .get(`http://localhost:3001/api/breed?name=${name}`)
       .then((dog) => dispatch({ type: "GET_DOG_NAME", payload: dog.data }))
       .catch((err) => console.log(err));
@@ -41,7 +42,7 @@ export function getDogByName(name) {
 export function getDogById(id) {
   return function (dispatch) {
     try {
-      const pedidoBack = axios
+      axios
         .get(`http://localhost:3001/api/breed/${id}`)
         .then((dog) => dispatch({ type: "GET_DOG_ID", payload: dog.data }));
     } catch (err) {
@@ -84,16 +85,23 @@ export function sort(order) {
   };
 }
 
-export function filtrar(filter){
+export function filtrar(filter) {
   return {
     type: "FILTER",
     payload: filter
-  }
+  };
 }
 
-export function filtrarRaza(filter){
+export function filtrarRaza(filter) {
   return {
-    type:'FILTER_RAZA',
+    type: "FILTER_RAZA",
     payload: filter
-  }
+  };
+}
+
+export function changePage(page) {
+  return {
+    type: "CHANGE_PAGE",
+    payload: page
+  };
 }

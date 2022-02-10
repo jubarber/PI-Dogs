@@ -1,6 +1,13 @@
+.contenedorTotal{
+  display: flex; 
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 .contenedorTarjeta {
-margin-left: 35%;
-width: 500px;
+justify-content: center;
+padding: 20px;
+
 } 
 
 .link{
@@ -9,4 +16,14 @@ width: 500px;
   font-size: 1.5rem;
   text-decoration: none;
   font-family: sans-serif;
+}
+
+.noCoincidences{
+  height: 100vh;
+  width: 100%;
+}
+
+.gif {
+  height: 50%;
+  width: 30%;
 }

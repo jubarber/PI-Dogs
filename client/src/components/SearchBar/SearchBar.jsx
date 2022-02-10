@@ -4,18 +4,18 @@ import { useDispatch } from "react-redux";
 import React, { useState } from "react";
 
 export default function SearchBar() {
-  const [input, setInput] = useState('');
   const dispatch = useDispatch();
+  const [input, setInput] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(getDogByName(input));
-    console.log('entre al submit')
+    // console.log('entre al submit')
     setInput([]);
   };
   const handleChange = (e) => {
     setInput(e.target.value);
-    console.log('SOY E TARGET VALUE', input)
+    // console.log('SOY E TARGET VALUE', input)
   };
 
   return (

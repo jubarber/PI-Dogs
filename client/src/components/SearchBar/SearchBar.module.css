@@ -4,16 +4,13 @@
   transition:all ease .3s;
   filter: alpha(opacity=50); /*Opacidad */
     opacity: 0.5;
-  color: #eee;
   border-radius: 12px;
-  border: 0;
   box-sizing: border-box;
-  font-size: 100%;
-  height: 3rem;
-  outline: 0;
+  height: 2.5rem;
   width: 75%;
   padding: 13px;
   font-family: 'Century Gothic', sans-serif;
+  font-size: 100%;
 }
 .input:hover{
   filter: alpha(opacity=100);
@@ -33,13 +30,11 @@
   font-size: 18px;
   text-align: center;
   border-radius: 8px;
-  border: 0;
   box-sizing: border-box;
   font-size: 100%;
-  height: 3rem;
-  outline: 0;
+  height: 2.5rem;
   width: 25%;
-  padding: 3%;
+  padding: 2%;
   -moz-transition:all ease .3s; /*Aplicamos una ligera transición*/
   -webkit-transition:all ease .3s ;
   transition:all ease .3s;

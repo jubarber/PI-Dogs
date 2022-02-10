@@ -19,3 +19,32 @@
   color: white;
   font-size: 1.5rem;
 }
+.nav{
+  background-color: #15172be8;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-family:'Century Gothic', sans-serif;
+ }
+
+ .link{
+  color:white;
+  font-size: 1.5rem;
+  text-decoration: none;
+  padding-right: 2rem;
+  padding-left: 2rem;
+  padding-top: 1.3rem;
+  padding-bottom: 1rem;
+}
+.link:hover{
+  text-decoration: underline;
+  font-weight: bold;
+}
+.link:active{
+  color: #06b;
+  text-decoration: underline;
+}
+.link:focus{
+  color: #06b;
+  text-decoration: underline;
+}
