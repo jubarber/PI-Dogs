@@ -9,6 +9,7 @@ export const SORT = "SORT";
 export const FILTER = "FILTER";
 export const FILTER_RAZA = "FILTER_RAZA";
 export const CHANGE_PAGE = "CHANGE_PAGE";
+// export const SORT_EDAD = "SORT_EDAD";
 
 export function getDogs() {
   return function (dispatch) {
@@ -85,12 +86,20 @@ export function sort(order) {
   };
 }
 
+// export function ordenEdad(orden){
+//   return {
+//     type: "SORT_EDAD",
+//     payload: orden
+//   }
+// }
+
 export function filtrar(filter) {
   return {
     type: "FILTER",
     payload: filter
   };
 }
+
 
 export function filtrarRaza(filter) {
   return {

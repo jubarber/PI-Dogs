@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { createDog, getTemperaments } from "../../redux/actions/actions.js";
 import estilos from "./Form.module.css";
-
 export function validate(input) {
   let error = {};
   
@@ -13,16 +12,19 @@ export function validate(input) {
   if (!input.heightMin) {
     error.heightMin = "Por favor, ingrese la altura mínima";
   }
-  if (input.heightMin && input.heightMax && input.heightMin >= input.heightMax) {
+  if (input.heightMin < 0){
+    error.heightMin = "Por favor, ingrese una altura valida";
+  }
+  if (input.heightMin && input.heightMax && parseInt(input.heightMin) >= parseInt(input.heightMax)) {
     error.height = "La altura máxima debe ser mayor que la altura mínima";
   }
   if (!input.heightMax) {
     error.heightMax = "Por favor, ingrese la altura máxima";
   } 
-  if (!input.weightMin) {
+  if (!input.weightMin || input.weightMin < 0) {
     error.weightMin = "Por favor, ingrese el peso mínimo";
   } 
-  if (input.weightMin && input.weightMax && input.weightMin >= input.weightMax) {
+  if (input.weightMin && input.weightMax && parseInt(input.weightMin) >= parseInt(input.weightMax)) {
     error.weight = "El peso máximo debe ser mayor que el peso mínimo";
   }
   if (!input.weightMax) {
@@ -94,6 +96,7 @@ export default function Form() {
         temperament: [],
       });
       setTemporal([]);
+      window.location.href='/home';
     }else {
       e.preventDefault();
       alert('Campos incompletos')
@@ -206,7 +209,7 @@ export default function Form() {
               <select
                 className={estilos.input}
                 onChange={(e) => handleSelectTemp(e)}>
-                <option label={"Seleccionar temperamento"}></option>
+                <option label={"Seleccionar temperamento"} disabled selected></option>
                 {tempState?.map((tempState) => {
                   return (
                     <option key={tempState.id} value={tempState.name} name={tempState.name} label={tempState.name}>
@@ -217,8 +220,6 @@ export default function Form() {
               </select>
               {/* {errors.temperament && <p className={estilos.danger}>{errors.temperament}</p>} */}
               
-
-
             <div className={estilos.inputGroup}>
               {temporal?.map((e) => {
                 return (
@@ -233,7 +234,6 @@ export default function Form() {
                 );
               })}
             </div>
-
             <button className={estilos.button} onClick={handleSubmit}>
               Crear
             </button>

@@ -9,7 +9,7 @@ export default function Nav(){
     <nav className={estilos.cuerpoNav}>
       <div className={estilos.linkContainer}>
       <Link to='/home' className={estilos.link} onClick={() => window.location.reload()}>
-        <span>Home</span>
+        <span>Volver</span>
       </Link>
       <Link to='/form' className={estilos.link}>
         <span>Crea tu raza</span>

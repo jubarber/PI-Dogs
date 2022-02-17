@@ -3,7 +3,9 @@ import {
   NOMBRE_ASCENDENTE,
   NOMBRE_DESCENDENTE,
   PESO_ASCENDENTE,
-  PESO_DESCENDENTE
+  PESO_DESCENDENTE,
+  EDAD_ASCENDENTE,
+  EDAD_DESCENDENTE
 } from "../../constantes/sort.js";
 import {
   GET_DOGS,
@@ -14,13 +16,16 @@ import {
   SORT,
   FILTER,
   FILTER_RAZA,
+  // SORT_EDAD,
   CHANGE_PAGE
 } from "../actions/actions.js";
 import {
   quickSort,
   quickSortDesc,
   quickSortWeight,
-  quickSortWeightDesc
+  quickSortWeightDesc,
+  quickSortEdad, 
+  quickSortEdadDesc
 } from "./quickSort.js";
 
 const initialState = {
@@ -81,6 +86,10 @@ export default function rootReducer(state = initialState, action) {
         perrosOrdenados = quickSortWeight(perrosOrdenados);
       } else if (action.payload === PESO_DESCENDENTE) {
         perrosOrdenados = quickSortWeightDesc(perrosOrdenados);
+      } else if(action.payload ===  EDAD_ASCENDENTE){
+        perrosOrdenados = quickSortEdad(perrosOrdenados)
+      } else if(action.payload === EDAD_DESCENDENTE){
+        perrosOrdenados = quickSortEdadDesc(perrosOrdenados)
       }
       return {
         ...state,
@@ -90,16 +99,16 @@ export default function rootReducer(state = initialState, action) {
     case FILTER:
       return {
         ...state,
-        filteredDogs: state.dogs[0].filter((e) => {
+        filteredDogs: state.dogs.flat().filter((e) => {
           return e.temperament
             ?.split(", ")
             .find((elem) => elem.toLowerCase() === action.payload);
         })
       };
 
+
     case FILTER_RAZA:
       const razaDB = (action.payload === "dataBase")?state.dogs[1]:state.dogs[0];
-
       return {
         ...state,
         filteredDogs: razaDB

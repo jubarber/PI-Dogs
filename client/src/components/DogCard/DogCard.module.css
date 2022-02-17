@@ -1,4 +1,4 @@
-.cuerpoTarjeta{
+.cuerpoTarjeta {
   background-color: #15172bea;
   border-radius: 20px;
   box-sizing: border-box;
@@ -10,60 +10,56 @@
   justify-content: center;
 }
 
-.cuerpoTarjeta p{
+.cuerpoTarjeta p {
   color: white;
   font-size: 1.5rem;
 }
 
-.cuerpoTarjeta:hover{
+.cuerpoTarjeta:hover {
   justify-content: center;
   background-color: #15172b;
-  height: 590px;
-  width: 535px;
-  -moz-transition:all ease .5s; /*Aplicamos una ligera transición*/
-    -webkit-transition:all ease .5s ;
-    transition:all ease .4s;
+  height: 565px;
+  width: 515px;
+  transition: all ease .4s;
+  transition-delay: .1s;
 }
-.cuerpoTarjeta:hover p{
+.cuerpoTarjeta:hover p {
   align-items: center;
   padding-top: 1rem;
 }
 
-.link{
+.link {
   color: white;
   margin-top: 2rem;
   font-size: 1.5rem;
 }
 
-.imagen{
+.imagen {
   height: 50%;
   width: 100%;
-
 }
 
-.contenedorVerMas{
+.contenedorVerMas {
   margin-top: -3.5rem;
   display: flex;
   justify-content: center;
 }
 
 .verMas {
-  font-size: 0.8rem;
+  font-size: 0.5rem;
   border-radius: 10px;
-  width: 60%;
-  height: 25%;
+  width: 14rem;
+  height: 1.5rem;
   zoom: 1;
   filter: alpha(opacity=0); /*Opacidad */
   opacity: 0; /*Inicialmente transparente */
   padding: 5px;
   color: rgb(0, 0, 0);
   background: rgba(194, 194, 194, 0.753);
-  -moz-transition:all ease .1s; /*Aplicamos una ligera transición*/
-  -webkit-transition:all ease .1s ;
-  transition:all ease .1s;
-  }
-  
-.cuerpoTarjeta:hover .verMas{
-  filter: alpha(opacity=80);
-  opacity: .5; 
+  transition: all ease .15s;
+}
+
+.cuerpoTarjeta:hover .verMas {
+  filter: alpha(opacity=60);
+  opacity: .4;
 }

@@ -24,7 +24,8 @@ router.get("/", async (req, res, next) => {
             id: e.id,
             name: e.name,
             weight: e.weight,
-            temperament: e.temperaments
+            lifeSpan: e.lifeSpan,
+            temperament: e.temperaments //devuelvo temperamentos con la primer letra mayuscula
             .map((e) => e.name.charAt(0).toUpperCase() + e.name.slice(1))
             .join(", ")
           };
@@ -41,6 +42,7 @@ router.get("/", async (req, res, next) => {
             name: e.name,
             weight: e.weight.metric,
             temperament: e.temperament,
+            lifeSpan: e.life_span,
             image: e.reference_image_id
           };
         });
@@ -64,7 +66,9 @@ router.get("/", async (req, res, next) => {
           name: e.name,
           weight: e.weight.metric,
           temperament: e.temperament,
-          image: e.reference_image_id
+          image: e.reference_image_id,
+          origin: e.origin,
+          lifeSpan: e.life_span
         };
       });
       const dbBreedsInfo = await Breed.findAll({ include: Temperament });
@@ -73,6 +77,7 @@ router.get("/", async (req, res, next) => {
           id: e.id,
           name: e.name,
           weight: e.weight,
+          lifeSpan: e.lifeSpan,
           temperament: e.temperaments
             .map((e) => e.name.charAt(0).toUpperCase() + e.name.slice(1))
             .join(", ")
@@ -135,12 +140,11 @@ router.post("/", async (req, res, next) => {
       weightMin,
       weightMax,
       lifeSpan,
-      temperament,
-      image
+      temperament
     } = req.body;
     const height = `${heightMin} - ${heightMax}`;
     const weight = `${weightMin} - ${weightMax}`;
-    let newDog = await Breed.create({ name, height, weight, lifeSpan, image});
+    let newDog = await Breed.create({ name, height, weight, lifeSpan });
     // console.log('SOY TEMPERAMENTO', temperament);
     await newDog.addTemperament(temperament);
     res.send(newDog);

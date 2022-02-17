@@ -21,9 +21,10 @@ export const DogCard = (props) => {
           e.target.src = imgDog;
         }}
       />
-      <p>Name: {props.name}</p>
-      <p>Weight: {props.weight}</p>
-      <p>Temperament: {props.temperament}</p>
+      <p>Nombre: {props.name}</p>
+      <p>Peso: {props.weight}</p>
+      <p>Anios de vida: {props.lifeSpan}</p>
+      <p>Temperamento: {props.temperament}</p>
       <div className={estilos.contenedorVerMas}>
       <p className={estilos.verMas}>Click para ver más</p>
       </div>
